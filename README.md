@@ -79,8 +79,6 @@ In the forward pass:
             ![image](https://user-images.githubusercontent.com/112920679/198814328-1a69a3cd-7e02-4829-b773-8338ac8dcd35.png)
             ![image](https://user-images.githubusercontent.com/112920679/198814339-9c9e5c30-ac2d-4f50-910c-9732f83cabe4.png)
 
-
-
 If jth neuron is output neuron, the m=mL  and output of j th neuron is
                ![image](https://user-images.githubusercontent.com/112920679/198814349-a6aee083-d476-41c4-b662-8968b5fc9880.png)
 
@@ -95,8 +93,6 @@ In the backward pass,
 •        it changes the synaptic weight by delta rule
 
 ![image](https://user-images.githubusercontent.com/112920679/198814362-05a251fd-fceb-43cd-867b-75e6339d870a.png)
-
-
 
 ## ALGORITHM:
 
@@ -118,7 +114,65 @@ Normalize our dataset.
 8. Finally, call the functions confusion_matrix(), and the classification_report() in order to evaluate the performance of our classifier.
 
 ## PROGRAM 
+```
+import pandas as pd
+import sklearn
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 
+df = pd.read_csv('IRIS.csv')
+df.head
+
+names = ['sepal-length','sepal-width','petal-length','petal-width','Class']
+
+# Take first 4 columns ans assign them to variable "X"
+X = df.iloc[:,0:4]
+# Take first 5th columns and assign them to variable "Y". Object dtype refers to strings
+Y = df.select_dtypes(include=[object])
+X.head()
+Y.head()
+
+# Y actually contains all categories or classes
+Y.species.unique()
+
+# Now transforming categorial into numerical values
+le = preprocessing.LabelEncoder()
+Y = Y.apply(le.fit_transform)
+Y.head()
+
+# Train and test split (80% of data into training set and 20% into test data)
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size = 0.20)
+
+# Feature Scaling
+scaler = StandardScaler() 
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+mlp = MLPClassifier(hidden_layer_sizes=(10,10,10),max_iter=1000)
+mlp.fit(X_train,Y_train.values.ravel())
+predictions = mlp.predict(X_test)
+print(predictions)
+
+# Evaluation of algorithm performance in classifying flowers
+print(confusion_matrix(Y_test,predictions))
+print(classification_report(Y_test,predictions))
+```
 ## OUTPUT 
+![image](https://github.com/Nivetham1710/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94155183/720b9e2e-ec19-4863-b5f6-ce4f90df62ab)
+
+![image](https://github.com/Nivetham1710/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94155183/e3ed78de-496c-47cd-912e-2c33fb6110dc)
+
+![image](https://github.com/Nivetham1710/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94155183/c73ddd0c-c5b6-4cbf-a5ed-7a52cdcebc24)
+
+![image](https://github.com/Nivetham1710/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94155183/55cd6ec3-5bea-4df8-a783-eaaa26b342fe)
+
+![image](https://github.com/Nivetham1710/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94155183/847e385b-7a54-432d-83ae-73e0407e0302)
+
+![image](https://github.com/Nivetham1710/Experiment-4---Implementation-of-MLP-with-Backpropagation/assets/94155183/6eb991d4-3bd7-4f6a-95e1-ab488bed4ecd)
 
 ## RESULT
+
+Thus, a program to implement Multilayer Perceptron for Multi Classification is successfully created and executed.
